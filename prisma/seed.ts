@@ -15,6 +15,7 @@ async function main() {
 
   const tursoDb = createClient({
     url: process.env.TURSO_DATABASE_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
   });
 
   for (const row of schemaResult.rows) {
