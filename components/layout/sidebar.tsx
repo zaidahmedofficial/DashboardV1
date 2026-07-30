@@ -3,28 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import {
-  Dashboard as DashboardIcon,
-  Payments,
-  ReceiptLong,
-  ListAlt,
-  BarChart,
-  Settings,
-  HelpOutline,
-  AccountBalance,
-} from "@mui/icons-material";
 
 const navItems = [
-  { href: "/dashboard", label: "Overview", icon: DashboardIcon },
-  { href: "/dashboard", label: "Income", icon: Payments },
-  { href: "/dashboard", label: "Expenses", icon: ReceiptLong },
-  { href: "/transactions", label: "Transactions", icon: ListAlt },
-  { href: "/reports", label: "Reports", icon: BarChart },
+  { href: "/dashboard", label: "Overview", icon: "dashboard" },
+  { href: "/dashboard", label: "Income", icon: "payments" },
+  { href: "/dashboard", label: "Expenses", icon: "receipt_long" },
+  { href: "/transactions", label: "Transactions", icon: "list_alt" },
+  { href: "/reports", label: "Reports", icon: "bar_chart" },
 ];
 
 const bottomNavItems = [
-  { href: "/dashboard", label: "Settings", icon: Settings },
-  { href: "/dashboard", label: "Support", icon: HelpOutline },
+  { href: "/dashboard", label: "Settings", icon: "settings" },
+  { href: "/dashboard", label: "Support", icon: "help_outline" },
 ];
 
 export function Sidebar() {
@@ -34,7 +24,7 @@ export function Sidebar() {
     <aside className="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest flex flex-col border-r border-outline-variant">
       <div className="px-6 py-6 flex items-center gap-3">
         <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <AccountBalance className="text-white text-[20px]" />
+          <span className="material-symbols-outlined text-white text-[20px] fill" data-icon="account_balance">account_balance</span>
         </div>
         <span className="font-headline-md text-headline-md font-bold text-on-surface tracking-tight">
           Precision Fintech
@@ -44,7 +34,6 @@ export function Sidebar() {
       <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
-          const Icon = item.icon;
           return (
             <Link
               key={item.href}
@@ -56,7 +45,7 @@ export function Sidebar() {
                   : "text-on-surface-variant hover:bg-surface-container hover:text-primary"
               )}
             >
-              <Icon className="text-[20px]" />
+              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
               <span>{item.label}</span>
             </Link>
           );
@@ -65,14 +54,13 @@ export function Sidebar() {
 
       <div className="px-4 pb-6 space-y-1">
         {bottomNavItems.map((item) => {
-          const Icon = item.icon;
           return (
             <Link
               key={item.href}
               href={item.href}
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all"
             >
-              <Icon className="text-[20px]" />
+              <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
               <span>{item.label}</span>
             </Link>
           );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Calendar, Download, Add } from "@mui/icons-material";
+import { Calendar as CalendarIcon, Download, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ranges = ["Today", "Last 7 Days", "Last 30 Days"] as const;
@@ -32,7 +32,7 @@ export function Topbar() {
 
       <div className="flex items-center gap-3">
         <button className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-on-surface border border-outline-variant rounded-lg hover:bg-surface-container transition-all active:scale-95">
-          <Calendar className="text-[18px]" />
+          <CalendarIcon className="text-[18px]" />
           Custom Range
         </button>
         <button
@@ -57,7 +57,7 @@ export function Topbar() {
           }}
           className="flex items-center gap-2 px-6 py-2 text-sm font-semibold text-white bg-primary rounded-lg hover:bg-primary-container transition-all active:scale-95 shadow-lg shadow-primary/20"
         >
-          <Add className="text-[18px]" />
+          <Plus className="text-[18px]" />
           Add Transaction
         </button>
       </div>
