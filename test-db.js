@@ -1,11 +1,10 @@
 const { PrismaClient } = require("@prisma/client");
 const { PrismaLibSql } = require("@prisma/adapter-libsql");
-const { createClient } = require("@libsql/client");
 
 async function test() {
-  const libsql = createClient({ url: "file:./dev.db" });
+  const adapter = new PrismaLibSql({ url: "file:./dev.db" });
   const client = new PrismaClient({
-    adapter: new PrismaLibSql(libsql),
+    adapter,
     log: ["error", "warn"],
   });
 
