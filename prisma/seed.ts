@@ -67,7 +67,6 @@ async function main() {
 
   await db.category.createMany({
     data: categoriesToCreate,
-    skipDuplicates: true,
   });
 
   const categories = await db.category.findMany({
