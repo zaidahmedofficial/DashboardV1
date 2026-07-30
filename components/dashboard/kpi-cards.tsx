@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp, TrendingDown, Add as AddIcon } from "@mui/icons-material";
+import { TrendingUp, TrendingDown, Plus } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils/format";
 

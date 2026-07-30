@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Login, Visibility, VisibilityOff } from "@mui/icons-material";
+import { LogIn, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,7 +34,7 @@ export default function LoginClient() {
         <div className="rounded-2xl border border-outline-variant bg-white p-8 shadow-sm">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <Login className="text-white text-[24px]" />
+              <LogIn className="text-white text-[24px]" />
             </div>
             <div>
               <h1 className="text-headline-md text-headline-md font-bold text-on-surface">Welcome back</h1>
