@@ -4,29 +4,40 @@ import { db } from "../lib/db";
 import { DEFAULT_CATEGORIES } from "../lib/utils/categorize";
 import { TransactionType } from "@prisma/client";
 
-async function main() {
-  const localDb = createClient({
-    url: process.env.DATABASE_URL!,
-  });
+async function syncSchemaToTurso() {
+  if (!process.env.TURSO_DATABASE_URL) return false;
 
-  const schemaResult = await localDb.execute(
-    "SELECT sql FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_prisma_%'"
-  );
+  try {
+    const localDb = createClient({
+      url: process.env.DATABASE_URL!,
+    });
 
-  const tursoDb = createClient({
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN!,
-  });
+    const schemaResult = await localDb.execute(
+      "SELECT sql FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_prisma_%'"
+    );
 
-  for (const row of schemaResult.rows) {
-    const sql = row.sql as string;
-    if (sql) {
-      await tursoDb.execute(sql);
-      console.log(`Synced table: ${sql.substring(0, 60)}...`);
+    const tursoDb = createClient({
+      url: process.env.TURSO_DATABASE_URL,
+      authToken: process.env.TURSO_AUTH_TOKEN,
+    });
+
+    for (const row of schemaResult.rows) {
+      const sql = row.sql as string;
+      if (sql) {
+        await tursoDb.execute(sql);
+      }
     }
-  }
 
-  console.log("Schema synced to Turso");
+    console.log("Schema synced to Turso");
+    return true;
+  } catch (e) {
+    console.warn("Could not sync schema to Turso, using local database:", (e as Error).message);
+    return false;
+  }
+}
+
+async function main() {
+  await syncSchemaToTurso();
 
   const userCount = await db.user.count();
   if (userCount > 0) {
@@ -64,16 +75,6 @@ async function main() {
   });
 
   const now = new Date();
-  const transactions: Array<{
-    userId: string;
-    date: Date;
-    amount: number;
-    type: TransactionType;
-    category: string;
-    counterparty: string | null;
-    status: "PENDING" | "PAID" | "FAILED";
-  }> = [];
-
   const daysAgo = (days: number) =>
     new Date(now.getFullYear(), now.getMonth(), now.getDate() - days);
 
@@ -108,6 +109,16 @@ async function main() {
     { date: daysAgo(28), amount: 120, counterparty: "Linear", category: "SaaS Tools", status: "PAID" as const },
     { date: daysAgo(30), amount: 680, counterparty: "Google Ads", category: "Marketing", status: "PAID" as const },
   ];
+
+  const transactions: Array<{
+    userId: string;
+    date: Date;
+    amount: number;
+    type: TransactionType;
+    category: string;
+    counterparty: string | null;
+    status: "PENDING" | "PAID" | "FAILED";
+  }> = [];
 
   for (const item of incomeData) {
     transactions.push({
