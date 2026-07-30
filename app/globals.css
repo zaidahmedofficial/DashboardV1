@@ -89,7 +89,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--color-outline-variant);
   }
 
   body {
