@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
@@ -23,16 +24,13 @@ export const authOptions: NextAuthOptions = {
           pass: process.env.SMTP_PASS,
         },
       },
-      from: process.env.SMTP_FROM || process.env.EMAIL_FROM,
+      from: process.env.SMTP_FROM || "Precision Fintech <noreply@precisionfintech.com>",
     }),
   ],
   callbacks: {
     async session({ session, token, user }) {
       if (session.user) {
         session.user.id = token.sub!;
-        session.user.name = token.name || user?.name || session.user.name;
-        session.user.email = token.email || user?.email || session.user.email;
-        session.user.image = token.picture || user?.image || session.user.image;
       }
       return session;
     },
