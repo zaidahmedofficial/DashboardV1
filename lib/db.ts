@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 import { createClient } from "@libsql/client";
 
 declare global {
@@ -15,7 +15,7 @@ const libsql = createClient({
 export const db =
   global.prisma ||
   new PrismaClient({
-    adapter: new PrismaLibSQL(libsql),
+    adapter: new PrismaLibSql(libsql),
     log: ["query"],
   });
 
